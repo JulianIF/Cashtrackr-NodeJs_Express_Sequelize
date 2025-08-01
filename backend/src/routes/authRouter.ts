@@ -31,5 +31,38 @@ router.post('/confirm-account',
     AuthController.confirmAccount
 )
 
+router.post('/logIn',
+    body('email')
+        .notEmpty().withMessage('Email required')
+        .isEmail().withMessage('Invalid email'),
+    body('password')
+        .notEmpty().withMessage('Password required'),
+    handleInputErrors,
+    AuthController.logIn
+)
 
+router.post('/forgot-password',
+    body('email')
+        .notEmpty().withMessage('Email required')
+        .isEmail().withMessage('Invalid email'),
+    handleInputErrors,
+    AuthController.forgotPassword
+)
+
+router.post('/validate-token',
+    body('token')
+    .notEmpty().isLength({min:6, max:6}).withMessage('Invalid Token'),
+    handleInputErrors,
+    AuthController.validateToken
+)
+
+router.post('/reset-password/:token',
+    param('token')
+    .notEmpty().isLength({min:6, max:6}).withMessage('Invalid Token'),
+    body('password')
+        .notEmpty().withMessage('New password required')
+        .isLength({min: 8}).withMessage('New password is too short - Minimum 8 characters'),
+    handleInputErrors,
+    AuthController.resetPasswordWithToken
+)
 export default router
