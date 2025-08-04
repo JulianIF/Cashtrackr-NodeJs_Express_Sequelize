@@ -7,6 +7,7 @@ import { ExpenseController } from "../controllers/ExpenseController";
 import { validateExpenseExists, validateExpenseId, validateExpenseInput } from "../middleware/expenses";
 import { AuthController } from "../controllers/AuthController";
 import { rateLimiter } from "../config/limiter";
+import { authenticate } from "../middleware/auth";
 
 const router = Router()
 
@@ -65,4 +66,29 @@ router.post('/reset-password/:token',
     handleInputErrors,
     AuthController.resetPasswordWithToken
 )
+
+router.get('/user',
+    authenticate,
+    AuthController.user
+)
+
+router.post('/update-password',
+    authenticate,
+    body('current-password')
+        .notEmpty().withMessage('Current password required'),
+    body('password')
+        .notEmpty().withMessage('New password required')
+        .isLength({min: 8}).withMessage('New password is too short - Minimum 8 characters'),
+    handleInputErrors,
+    AuthController.updateCurrentUserPassword
+)
+
+router.get('/check-password',
+    authenticate,
+    body('password')
+        .notEmpty().withMessage('Current password required'),
+    handleInputErrors,
+    AuthController.checkPassword
+)
+
 export default router

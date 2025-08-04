@@ -45,6 +45,7 @@ export class AuthController
 
     static confirmAccount = async (req: Request, res:Response) =>
     {
+        
         const {token} = req.body
 
         const user = await User.findOne({where: {token}})
@@ -81,7 +82,7 @@ export class AuthController
 
         const isPasswordCorrect = await checkPassword(password, user.password)
 
-        if(isPasswordCorrect)
+        if(!isPasswordCorrect)
         {
             const error = new Error ('Incorrect Password')
             res.status(401).json({error: error.message}) 
@@ -153,5 +154,50 @@ export class AuthController
         await user.save()
 
         res.json('Password Modified')
+    }
+
+    static user = async (req: Request, res:Response) =>
+    {
+        res.json(req.user)
+    }
+
+    static updateCurrentUserPassword = async (req: Request, res:Response) =>
+    {
+        const { current_password, password } = req.body
+        const {id} = req.user
+
+        const user = await User.findByPk(id)
+
+        const isPasswordCorrect = await checkPassword(current_password, user.password)
+
+        if(!isPasswordCorrect)
+        {
+            const error = new Error ('Current password is incorrect')
+            res.status(401).json({error: error.message}) 
+        }
+
+        user.password = await hashPassword(password)
+        
+        await user.save()
+
+        res.json('Password Modified')
+    }
+
+    static checkPassword = async (req: Request, res:Response) =>
+    {
+        const { password } = req.body
+        const {id} = req.user
+
+        const user = await User.findByPk(id)
+
+        const isPasswordCorrect = await checkPassword(password, user.password)
+
+        if(!isPasswordCorrect)
+        {
+            const error = new Error ('Current password is incorrect')
+            res.status(401).json({error: error.message}) 
+        }
+
+        res.json('Correct Password')
     }
 }

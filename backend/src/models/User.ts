@@ -15,7 +15,6 @@ class User extends Model
     })
     declare name:string
 
-    @AllowNull(false)
     @Column
     ({
         type:DataType.STRING(60)
