@@ -12,8 +12,11 @@ export class BudgetController
                 order: 
                 [
                     ['createdAt', 'DESC']
-                ]
-                //TODO: FILTER BY AUTHENTICATED USER
+                ],
+                where: 
+                {
+                    userId: req.user.id
+                }
             })
         } 
         catch (e) 
@@ -27,7 +30,7 @@ export class BudgetController
         try 
         {
             const budget = new Budget(req.body)
-
+            budget.userId = req.user.id
             await budget.save()
             res.status(201).json('Budget Created') 
         } 
