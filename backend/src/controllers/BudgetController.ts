@@ -8,7 +8,7 @@ export class BudgetController
     {
         try 
         {
-            const budgets = Budget.findAll({ 
+            const budgets = await Budget.findAll({ 
                 order: 
                 [
                     ['createdAt', 'DESC']
@@ -18,10 +18,11 @@ export class BudgetController
                     userId: req.user.id
                 }
             })
+            res.json(budgets)
         } 
         catch (e) 
         {
-           res.status(500).json({error: 'Server Error'}) 
+            res.status(500).json({error: 'Server Error'}) 
         }
     }
 
