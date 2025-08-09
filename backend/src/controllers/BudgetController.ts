@@ -30,7 +30,7 @@ export class BudgetController
     {
         try 
         {
-            const budget = new Budget(req.body)
+            const budget = await Budget.create(req.body)
             budget.userId = req.user.id
             await budget.save()
             res.status(201).json('Budget Created') 
