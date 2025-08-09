@@ -4,7 +4,7 @@ import { BudgetController } from '../../../controllers/BudgetController'
 import Budget from '../../../models/Budget'
 import Expense from '../../../models/Expense'
 
-jest.mock('../../models/Budget', () =>({
+jest.mock('../../../models/Budget', () =>({
     findAll: jest.fn(),
     create: jest.fn(),
     findByPk: jest.fn()
