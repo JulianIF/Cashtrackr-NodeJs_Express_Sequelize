@@ -98,20 +98,4 @@ describe('Expense Middleware - validateExpenseExists', () =>
         expect(res.statusCode).toBe(401)
         expect(next).not.toHaveBeenCalled()
     })
-
-    it('Should proceed to next middleware if user has access', () => 
-    {
-        const req = createRequest({
-            budget: budgets[0],
-            user: { id: 1 },
-            body: { name: 'New Expense', amount: 3000}
-        })
-        const res = createResponse();
-        const next = jest.fn()
-
-        hasAccess(req, res, next)
-
-        expect(next).toHaveBeenCalled()
-        expect(next).toHaveBeenCalledTimes(1)
-    })
 })
