@@ -16,12 +16,12 @@ export class AuthController
         if(userExists)
         {
             const error = new Error ('User already exists')
-            res.status(409).json({error: error.message}) 
+            return res.status(409).json({error: error.message}) 
         }
 
         try 
         {
-            const user = new User(req.body)
+            const user = await User.create(req.body)
 
             user.password = await hashPassword(req.body.password)
             user.token = generateToken()
@@ -71,13 +71,13 @@ export class AuthController
         if(!user)
         {
             const error = new Error ('User not found')
-            res.status(404).json({error: error.message}) 
+            return res.status(404).json({error: error.message}) 
         }
 
         if(!user.confirmed)
         {
             const error = new Error ('Account not confirmed')
-            res.status(403).json({error: error.message}) 
+            return res.status(403).json({error: error.message}) 
         }
 
         const isPasswordCorrect = await checkPassword(password, user.password)
@@ -85,7 +85,7 @@ export class AuthController
         if(!isPasswordCorrect)
         {
             const error = new Error ('Incorrect Password')
-            res.status(401).json({error: error.message}) 
+            return res.status(401).json({error: error.message}) 
         }
 
         const jwToken = generateJWT(user.id)
