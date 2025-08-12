@@ -27,14 +27,13 @@ router.post('/create-account',
 
 router.post('/confirm-account',
     body('token')
-    .notEmpty().isLength({min:6, max:6}).withMessage('Invalid Token'),
+    .isLength({min:6, max:6}).withMessage('Invalid Token'),
     handleInputErrors,
     AuthController.confirmAccount
 )
 
 router.post('/logIn',
     body('email')
-        .notEmpty().withMessage('Email required')
         .isEmail().withMessage('Invalid email'),
     body('password')
         .notEmpty().withMessage('Password required'),

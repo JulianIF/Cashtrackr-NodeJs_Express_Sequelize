@@ -5,17 +5,17 @@ import { db } from './config/db'
 import budgetRouter from './routes/budgetRouter'
 import authRouter from './routes/authRouter'
 
-async function connectDB()
+export async function connectDB()
 {
     try 
     {
         await db.authenticate()
-        db.sync()
-        console.log(colors.blue.bold("Connection to DB Successful"))
+        await db.sync()
+        //console.log(colors.blue.bold("Connection to DB Successful"))
     } 
     catch (e) 
     {
-        console.log(colors.red.bold("Connection to DB Failed"))
+        //console.log(colors.red.bold("Connection to DB Failed"))
     }
 }
 
@@ -28,7 +28,5 @@ app.use(express.json())
 
 app.use('/api/budgets', budgetRouter)
 app.use('/api/auth', authRouter)
-
-
 
 export default app
