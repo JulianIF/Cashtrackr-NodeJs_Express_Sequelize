@@ -16,6 +16,14 @@ export const RegisterSchema = z.object(
     }
 );
 
+export const LoginSchema = z.object({
+        email: z.string()
+                .min(1, {message: 'Email is required'})
+                .email( {message: 'Invalid email'}),
+        password: z.string()
+                .min(1, {message: 'Password is required'})
+})
+
 export const SuccessSchema = z.string()
 export const ErrorResponseSchema = z.object({
     error: z.string()

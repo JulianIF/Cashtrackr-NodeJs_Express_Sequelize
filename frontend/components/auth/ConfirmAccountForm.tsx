@@ -1,11 +1,13 @@
 "use client"
 import { confirmAccount } from "@/actions/confirm-account-action"
 import { PinInput, PinInputField } from "@chakra-ui/pin-input"
+import { useRouter } from "next/navigation"
 import { startTransition, useActionState, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 export default function ConfirmAccountForm() 
 {
+    const router = useRouter()
     const [isComplete, setIsComplete] = useState(false)
     const [token, setToken] = useState("")
 
@@ -43,7 +45,7 @@ export default function ConfirmAccountForm()
             {
                 onClose: () =>
                 {
-
+                    router.push("/auth/logIn")
                 }
             })
         }
