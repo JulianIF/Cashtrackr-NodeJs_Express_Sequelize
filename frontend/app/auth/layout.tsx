@@ -1,4 +1,5 @@
 import Logo from "@/components/UI/Logo";
+import ToastNotification from "@/components/UI/ToastNotification";
 
 
 export default function AuthLayout({
@@ -19,6 +20,8 @@ export default function AuthLayout({
                 </div>
             </div>
         </div>
+
+        <ToastNotification/>
     </>
   );
 }
