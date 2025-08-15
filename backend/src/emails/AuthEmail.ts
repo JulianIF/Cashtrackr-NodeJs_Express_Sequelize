@@ -19,7 +19,7 @@ export class AuthEmail
             subject: 'CashTrackr - Confirm Account',
             html:`<p> Hello ${user.name}, your account is almost ready </p>
                   <p> Visit this link: </p>
-                  <a href=#> Confirm Account </a>
+                  <a href="${process.env.FRONTEND_URL}/auth/confirm-account"> Confirm Account </a>
                   <p> Your code is: <b>${user.token}</b></p>`
         })
     }
@@ -33,7 +33,7 @@ export class AuthEmail
             subject: 'CashTrackr - Reset Password',
             html:`<p> Hello ${user.name}, you have solicited a password reset</p>
                   <p> Visit this link: </p>
-                  <a href=#> Reset Password </a>
+                  <a href="${process.env.FRONTEND_URL}/auth/new-password"> Reset Password </a>
                   <p> Your code is: <b>${user.token}</b></p>`
         })
     }
