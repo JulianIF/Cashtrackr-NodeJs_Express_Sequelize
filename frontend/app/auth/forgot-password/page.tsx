@@ -1,4 +1,4 @@
-import ForgotPasswordForm from "@/components/auth/ForgotPassword";
+import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 import { Metadata } from "next";
 import Link from "next/link";
 

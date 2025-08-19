@@ -1,6 +1,5 @@
 import ConfirmAccountForm from "@/components/auth/ConfirmAccountForm";
 import { Metadata } from "next";
-import Link from "next/link";
 
 
 export const metadata : Metadata = 
