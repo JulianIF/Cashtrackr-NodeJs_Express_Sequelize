@@ -62,3 +62,16 @@ export const DraftBudgetSchema = z.object({
                 number({message: 'Invalid amount'})
                 .min(1, {message: 'Invalid amount'}),
 })
+
+export const BudgetAPIResponseSchema = z.object({
+        id: z.number(),
+        name: z.string(),
+        amount: z.string(),
+        userId: z.number(),
+        createdAt: z.string(),
+        updatedAt: z.string()
+})
+
+export const BudgetsAPIResponseSchema = z.array(BudgetAPIResponseSchema)
+
+export type Budget = z.infer<typeof BudgetAPIResponseSchema>
