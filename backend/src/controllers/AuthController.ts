@@ -136,7 +136,7 @@ export class AuthController
             res.status(404).json({error: error.message}) 
         }
 
-        res.json('Token is valid')
+        res.json('Valid Token, you can change your password')
     }
 
     static resetPasswordWithToken = async (req: Request, res:Response) =>
