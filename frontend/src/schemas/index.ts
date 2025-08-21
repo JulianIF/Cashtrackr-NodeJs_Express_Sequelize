@@ -53,4 +53,12 @@ export const ResetPasswordSchema = z.object({
 }).refine((data) => data.password === data.password_confirmation, {
         message: "Passwords do not match",
         path: ["password_confirmation"]
-});
+})
+
+export const DraftBudgetSchema = z.object({
+        name: z.string()
+                .min(1, {message: 'Budget name required'}),
+        amount: z.coerce.
+                number({message: 'Invalid amount'})
+                .min(1, {message: 'Invalid amount'}),
+})
