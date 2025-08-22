@@ -1,30 +1,15 @@
-import getTokenFromCookies from "@/src/auth/token"
-import { BudgetAPIResponseSchema } from "@/src/schemas"
+import EditBudgetForm from "@/components/budgets/EditBudgetForm"
+import { Metadata } from "next"
 import Link from "next/link"
-import { notFound } from "next/navigation"
+import { getBudget } from "@/src/services/budgets"
 
-const getBudget = async (budgetId: string) => 
+export async function generateMetadata({params} : {params: {id: string}}) : Promise<Metadata>
 {
-    const token = await getTokenFromCookies()
-    const url = `${process.env.API_URL}/budgets/${budgetId}`
-
-    const req = await fetch(url,
-    {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-
-    const json = await req.json()
-
-    if(!req.ok)
-    {
-        notFound()
+    const budget = await getBudget(params.id)
+    return {
+        title: `CashTrack | ${budget.name}`,
+        description: `CashTrack | ${budget.name}`
     }
-
-    const budget = BudgetAPIResponseSchema.parse(json)
-    return budget
 }
 
 export default async function EditBudgetPage({params} : {params: {id: string}})
@@ -41,6 +26,7 @@ export default async function EditBudgetPage({params} : {params: {id: string}})
                 <span className="text-amber-500">budget</span>
             </p>
             </div>
+            
             <Link
             href={'/admin'}
             className='bg-amber-500 p-2 rounded-lg text-white font-bold w-full md:w-auto text-center'
@@ -49,7 +35,9 @@ export default async function EditBudgetPage({params} : {params: {id: string}})
             </Link>
         </div>
         <div className='p-10 mt-10  shadow-lg border '>
-
+            <EditBudgetForm
+            budget={budget}
+            />
         </div>
         </>
     )

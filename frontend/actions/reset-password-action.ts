@@ -26,7 +26,7 @@ export async function resetPassword(token: string, prevState: ActionStateType, f
         }
     }
 
-    const url = `${process.env.API_URL}/auth/reset-password${token}`
+    const url = `${process.env.API_URL}/auth/reset-password/${token}`
     const req = await fetch(url, 
     {
         method: "POST",

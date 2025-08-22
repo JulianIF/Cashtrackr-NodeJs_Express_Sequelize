@@ -21,6 +21,10 @@ async function getUserBudgets()
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
+        },
+        next:
+        {
+            tags: ['all-budgets']
         }
     })
     const json = await req.json()
@@ -48,7 +52,7 @@ export default async function AdminPage()
             >
                 Create new Budget
             </Link>
-
+            </div>
             {budgets.length ? (
                 <ul role="list" className="divide-y divide-gray-300 border shadow-lg mt-10 ">
                 {budgets.map((budget) => (
@@ -92,7 +96,6 @@ export default async function AdminPage()
                     </Link>
                 </p>
             )}
-            </div>
         </>
     )
 }
