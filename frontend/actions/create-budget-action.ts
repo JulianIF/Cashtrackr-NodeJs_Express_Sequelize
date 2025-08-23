@@ -2,6 +2,7 @@
 
 import getTokenFromCookies from "@/src/auth/token"
 import { DraftBudgetSchema, SuccessSchema } from "@/src/schemas"
+import { revalidatePath } from "next/cache"
 
 type ActionStateType = 
 {
@@ -46,6 +47,8 @@ export async function createBudget(prevState: ActionStateType, formData: FormDat
 
     const json = await req.json()
 
+    revalidatePath('/admin')
+    
     const success = SuccessSchema.parse(json)
 
     return {
