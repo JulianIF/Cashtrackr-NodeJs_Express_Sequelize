@@ -1,8 +1,14 @@
 "use server"
 
 import getTokenFromCookies from "@/src/auth/token"
-import { DraftExpenseSchema, ErrorResponseSchema, SuccessSchema } from "@/src/schemas"
+import { Budget, DraftExpenseSchema, ErrorResponseSchema, Expense, SuccessSchema } from "@/src/schemas"
 import { revalidatePath } from "next/cache"
+
+type BudgetAndExpenseIdType = 
+{
+    budgetId: Budget['id']
+    expenseId: Expense['id']
+}
 
 type ActionStateType = 
 {
@@ -10,54 +16,54 @@ type ActionStateType =
     success: string
 }
 
-export default async function createExpense(budgetId: number, prevState: ActionStateType, formData: FormData)
+export default async function editExpense({budgetId, expenseId} : BudgetAndExpenseIdType, prevState: ActionStateType, formData: FormData)
 {
-    const expenseData = DraftExpenseSchema.safeParse(
+    const expense = DraftExpenseSchema.safeParse(
     {
         name: formData.get('name'),
         amount: formData.get('amount')
     })
 
-    if (!expenseData.success) 
+    if(!expense.success)
     {
         return {
-            errors: expenseData.error.issues.map(issue => issue.message),
+            errors: expense.error.issues.map(issue => issue.message),
             success: ''
         }
     }
 
-
     const token = await getTokenFromCookies()
-    
-    const url = `${process.env.API_URL}/budgets/${budgetId}/expenses`
+        
+    const url = `${process.env.API_URL}/budgets/${budgetId}/expenses/${expenseId}`
 
     const req = await fetch(url,
     {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(
         {
-            name: expenseData.data.name,
-            amount: expenseData.data.amount
+            name: expense.data.name,
+            amount: expense.data.amount
         })
 
     })
 
     const json = await req.json()
-    
+
     if(!req.ok)
     {
         const {error} = ErrorResponseSchema.parse(json)
-        return{
+        return {
             errors: [error],
             success: ''
         }
     }
-    
+
     const success = SuccessSchema.parse(json)
+
     revalidatePath(`/admin/budgets/${budgetId}`)
 
     return {
