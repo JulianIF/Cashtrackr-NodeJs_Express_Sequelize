@@ -56,3 +56,14 @@ export const validateExpenseInput = async (req: Request, res: Response, next:Nex
 
     next()
 }
+
+export const belongsToBudget = async (req: Request, res: Response, next:NextFunction) =>
+{
+    if(req.budget.id !== req.expense.budgetId)
+    {
+        const error = new Error('Invalid Action')
+
+        return res.status(403).json({error: error.message}) 
+    }
+    next()
+}
