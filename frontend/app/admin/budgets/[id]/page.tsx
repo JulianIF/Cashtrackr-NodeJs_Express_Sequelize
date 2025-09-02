@@ -1,5 +1,7 @@
+import Progressbar from "@/components/budgets/Progressbar"
 import AddExpenseButton from "@/components/expenses/AddExpenseButton"
 import ExpenseMenu from "@/components/expenses/ExpenseMenu"
+import Amount from "@/components/UI/Amount"
 import ModalContainer from "@/components/UI/ModalContainer"
 import { getBudget } from "@/src/services/budgets"
 import { formatCurrency, formatDate } from "@/src/utils"
@@ -17,6 +19,11 @@ export async function generateMetadata({params} : {params: {id: string}}) : Prom
 export default async function BudgetDetailsPage({params} : {params: {id: string}}) 
 {
     const budget = await getBudget(params.id)
+    const totalSpent = budget.expenses.reduce((total, expense) => +expense.amount + total, 0)
+    const totalAvailable = +budget.amount - totalSpent
+
+    const percentage = +((totalSpent / +budget.amount) * 100).toFixed(2)
+
     return(
         <>
         <div className='flex justify-between items-center'>
@@ -30,6 +37,28 @@ export default async function BudgetDetailsPage({params} : {params: {id: string}
         {budget.expenses.length ? 
         (
             <>
+                <div className="grid grid-cols-1 md:grid-cols-2 mt-10">
+                    <div>
+                        <Progressbar
+                        percentage={percentage}
+                        />
+                    </div>
+
+                    <div className="flex flex-col justify-center items-center md:items-start gap-5">
+                        <Amount
+                            label="Total Budget"
+                            amount={+budget.amount}
+                        />
+                        <Amount
+                            label="Available"
+                            amount={totalAvailable}
+                        />
+                        <Amount
+                            label="Spent"
+                            amount={totalSpent}
+                        />
+                    </div>
+                </div>
                 <ul role="list" className="divide-y divide-gray-300 border shadow-lg mt-10 ">
                 {budget.expenses.map((expense) => (
                     <li key={expense.id} className="flex justify-between gap-x-6 p-5">
