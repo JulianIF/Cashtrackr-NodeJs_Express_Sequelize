@@ -1,7 +1,7 @@
 "use client"
 
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
-import "react-circular-progressbar/dist/style.css"
+import "react-circular-progressbar/dist/styles.css";
 
 export default function Progressbar({percentage}: {percentage: number})
 {
@@ -13,7 +13,7 @@ export default function Progressbar({percentage}: {percentage: number})
                     pathColor: percentage >= 100 ? '#DC2626' : '#F59E0B',
                     trailColor: '#E1E1E1',
                     textColor: percentage >= 100 ? '#DC2626' : '#F59E0B',
-                    textSize: 8
+                    textSize: 10
                 })}
                 text={`${percentage}% Spent`}
                 value={percentage}

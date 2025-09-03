@@ -5,7 +5,8 @@ import { getBudget } from "@/src/services/budgets"
 
 export async function generateMetadata({params} : {params: {id: string}}) : Promise<Metadata>
 {
-    const budget = await getBudget(params.id)
+    const {id} = await params
+    const budget = await getBudget(id)
     return {
         title: `CashTrack | ${budget.name}`,
         description: `CashTrack | ${budget.name}`
@@ -14,7 +15,8 @@ export async function generateMetadata({params} : {params: {id: string}}) : Prom
 
 export default async function EditBudgetPage({params} : {params: {id: string}})
 {
-    const budget = await getBudget(params.id)
+    const {id} = await params
+    const budget = await getBudget(id)
     return(
         <>
         <div className='flex flex-col-reverse md:flex-row md:justify-between items-center'>

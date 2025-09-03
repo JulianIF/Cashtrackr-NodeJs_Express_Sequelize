@@ -9,7 +9,8 @@ import { Metadata } from "next"
 
 export async function generateMetadata({params} : {params: {id: string}}) : Promise<Metadata>
 {
-    const budget = await getBudget(params.id)
+    const {id} = await params
+    const budget = await getBudget(id)
     return {
         title: `CashTrack | ${budget.name}`,
         description: `CashTrack | ${budget.name}`
@@ -18,7 +19,8 @@ export async function generateMetadata({params} : {params: {id: string}}) : Prom
 
 export default async function BudgetDetailsPage({params} : {params: {id: string}}) 
 {
-    const budget = await getBudget(params.id)
+    const {id} = await params
+    const budget = await getBudget(id)
     const totalSpent = budget.expenses.reduce((total, expense) => +expense.amount + total, 0)
     const totalAvailable = +budget.amount - totalSpent
 

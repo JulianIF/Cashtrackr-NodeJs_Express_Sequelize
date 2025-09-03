@@ -5,8 +5,10 @@ export async function GET(request: Request, {params}: {params: {budgetId: string
 {
     await verifySession()
 
-    const token = getTokenFromCookies()
-    const url = `${process.env.API_URL}/budgets/${params.budgetId}/expenses/${params.expenseId}`
+    const token = await getTokenFromCookies()
+    const {budgetId, expenseId} = await params
+
+    const url = `${process.env.API_URL}/budgets/${budgetId}/expenses/${expenseId}`
 
     const req = await fetch(url,
     {
