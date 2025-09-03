@@ -57,8 +57,6 @@ export async function updatePassword(prevState: ActionStateType, formData: FormD
 
     const success = SuccessSchema.parse(json)
 
-    revalidatePath(`/admin/budgets/${budgetId}`)
-
     return(
     {
         errors: [],
