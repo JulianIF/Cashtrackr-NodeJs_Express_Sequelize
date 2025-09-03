@@ -7,7 +7,7 @@ export const RegisterSchema = z.object(
     name:  z.string()
             .min(1, "Name required"),
     password:  z.string()
-                .min(8, "Password is too short, must be at least 8 characters"),
+                .min(8, "Password too short - Minimum 8 characters"),
     password_confirmation: z.string()
 }).refine((data) => data.password === data.password_confirmation, 
     {
@@ -97,4 +97,14 @@ export const DraftExpenseSchema = z.object(
 
 export type Expense = z.infer<typeof ExpenseAPIResponseSchema>
 export type DraftExpense = z.infer<typeof DraftExpenseSchema>
+
+export const UpdatePasswordSchema = z.object({
+        current_password: z.string().min(1, {message: 'Password required'}),
+        password: z.string()
+                .min(8, {message: 'New Password too short - Minimum 8 characters'}),
+        password_confirmation: z.string()
+  }).refine((data) => data.password === data.password_confirmation, {
+      message: "Passwords do not match",
+      path: ["password_confirmation"]
+  });
 
