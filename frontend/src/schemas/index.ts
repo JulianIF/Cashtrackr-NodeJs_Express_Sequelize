@@ -108,3 +108,11 @@ export const UpdatePasswordSchema = z.object({
       path: ["password_confirmation"]
   });
 
+export const ProfileFormSchema = z.object({
+    name: z.string()
+            .min(1, {message: 'Name required'}),
+    email: z.string()
+            .min(1, {message: 'Email required'})
+            .email({message: 'Invalid Email'})
+})
+

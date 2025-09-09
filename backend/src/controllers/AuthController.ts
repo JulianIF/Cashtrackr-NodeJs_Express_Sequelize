@@ -44,6 +44,7 @@ export class AuthController
         } 
         catch (e) 
         {
+            res.status(500).json('Server Error') 
         }
     }
 
@@ -203,5 +204,31 @@ export class AuthController
         }
 
         res.json('Correct Password')
+    }
+
+    static updateUser = async (req:Request, res:Response) =>
+    {
+        const {name, email} = req.body
+
+
+        try 
+        {
+            const existingUser = await User.findOne({where: {email}})
+
+            if(existingUser && existingUser.id !== req.user.id)
+            {
+                const error = new Error('Email already registered by another user')
+                return res.status(409).json({error: error.message})
+            }
+            await User.update({email, name}, 
+            {
+                where: {id : req.user.id}
+            })
+            res.json('Profile Updated')
+        } 
+        catch (error) 
+        {
+           res.status(500).json('Server Error') 
+        }
     }
 }
